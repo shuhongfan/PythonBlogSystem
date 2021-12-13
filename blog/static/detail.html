@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!-- 网站主语言 -->
+<html lang="zh-cn">
+
+<head>
+    <!-- 网站采用的字符编码 -->
+    <meta charset="utf-8">
+    <!-- 网站标题 -->
+    <title>文章详情</title>
+    <!-- 引入bootstrap的css文件 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!--详情页面导入-->
+    <script src="ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js"></script>
+    <link rel="stylesheet" href="prism/prism.css">
+    <!--导入css-->
+    <link rel="stylesheet" href="common/common.css">
+    <link rel="stylesheet" href="common/jquery.pagination.css">
+    <!-- 引入vuejs -->
+    <script type="text/javascript" src="js/vue-2.5.16.js"></script>
+    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+<!-- 定义导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- 导航栏商标 -->
+        <div>
+            <a class="navbar-brand" href="../templates/index.html">个人博客</a>
+        </div>
+        <!-- 分类 -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link mr-2" href="#">Python</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-2" href="#">Java</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-2" href="#">C</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-2" href="#">C++</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--登录/个人中心-->
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav">
+
+            <!-- 如果用户已经登录，则显示用户名下拉框 -->
+            <li class="nav-item dropdown" v-if="is_login">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">admin</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
+                    <a class="dropdown-item" href="../templates/write_blog.html">写文章</a>
+                    <a class="dropdown-item" href='../templates/center.html'>个人信息</a>
+                    <a class="dropdown-item" href='#'>退出登录</a>
+                </div>
+            </li>
+            <li class="nav-item" v-else>
+                <a class="nav-link" href="../templates/login.html">登录</a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<!-- content -->
+<div class="container">
+    <div class="row">
+        <!--文章详情-->
+        <div class="col-9">
+            <!-- 标题及作者 -->
+            <h1 class="mt-4 mb-4">如何更好的学习Django呢？</h1>
+            <div class="alert alert-success"><div>作者：<span>李四</span></div><div>浏览：168</div></div>
+            <!-- 文章正文 -->
+            <div class="col-12" style="word-break: break-all;word-wrap: break-word;">
+                <p><p>Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。</p></p>
+            </div>
+            <br>
+            <!-- 发表评论 -->
+            <hr>
+            <br>
+            <h5 class="row justify-content-center" v-show="!is_login">请<a href="../templates/login.html">登录</a>后回复
+            </h5>
+            <br>
+            <div>
+                <form method="POST">
+                <div class="form-group"><label for="body"><strong>我也要发言：</strong></label>
+                    <div>
+
+                        <div class="django-ckeditor-widget" data-field-id="id_body" style="display: inline-block;">
+                            <textarea cols="40" id="id_body" name="content" rows="10" required data-processed="0" :data-config="data_config" data-external-plugin-resources="[]" data-id="id_body" data-type="ckeditortype">
+
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                    <!-- 提交按钮 -->
+                    <button type="submit" class="btn btn-primary ">发送</button>
+                </form>
+            </div>
+            <br>
+            <!-- 显示评论 -->
+            <h4>共有5条评论</h4>
+            <div class="row">
+                <div class="col-12" >
+                            <hr><p><strong style="color: pink"></strong></p>
+                            <div>
+                                <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                                <br>
+                                <p>学习了</p>
+                            </div>
+                </div>
+                <div class="col-12">
+                    <hr><p><strong style="color: pink"></strong></p>
+                    <div>
+                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                        <br>
+                        <p>学习了</p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr><p><strong style="color: pink"></strong></p>
+                    <div>
+                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                        <br>
+                        <p>学习了</p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr><p><strong style="color: pink"></strong></p>
+                    <div>
+                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                        <br>
+                        <p>学习了</p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr><p><strong style="color: pink"></strong></p>
+                    <div>
+                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
+                        <br>
+                        <p>学习了</p>
+                    </div>
+                </div>
+                <div class="pagenation" style="text-align: center">
+                    <div id="pagination" class="page"></div>
+                </div>
+            </div> 
+
+        </div>
+        <!-- 推荐 -->
+        <div class="col-3 mt-4" id="sidebar" class="sidebar">
+            <div class="sidebar__inner">
+                    <h4><strong>推荐</strong></h4>
+                    <hr>
+                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="py-3 bg-dark" id="footer">
+    <div class="container">
+        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+    </div>
+</footer>
+</div>
+
+<!--ckeditor-->
+<script type="text/javascript" src="ckeditor/ckeditor-init.js" data-ckeditor-basepath="ckeditor/ckeditor/" id="ckeditor-init-script"></script>
+<script type="text/javascript" src="ckeditor/ckeditor/ckeditor.js"></script>
+<!-- 引入js -->
+<script type="text/javascript" src="js/host.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/detail.js"></script>
+<script type="text/javascript" src="js/jquery.pagination.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#pagination').pagination({
+            currentPage: 15,
+            totalPage: 30,
+            callback:function (current) {
+
+                location.href = '/';
+            }
+        })
+    });
+</script>
+</body>
+
+</html>

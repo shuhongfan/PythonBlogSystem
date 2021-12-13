@@ -1,0 +1,13 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+#footer
+{
+    height: 60px;
+}
+
+/* 分页样式 */
+.pagenation{height:32px;text-align:center;font-size:0;margin:30px auto;}
+.pagenation a{display:inline-block;border:1px solid #d2d2d2;background-color:#f8f6f7;font-size:12px;padding:5px 10px;color:#666;margin:5px}
+.pagenation .active{background-color:#fff;color:#43a200}

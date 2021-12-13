@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!-- 网站主语言 -->
+<html lang="zh-cn">
+{% load static %}
+<head>
+    <!-- 网站采用的字符编码 -->
+    <meta charset="utf-8">
+    <!-- 网站标题 -->
+    <title>登录</title>
+    <!-- 引入bootstrap的css文件 -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- 引入vuejs -->
+    <script type="text/javascript" src="{% static 'js/vue-2.5.16.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios-0.18.0.min.js' %}"></script>
+</head>
+
+<body>
+<div id="app">
+
+<!-- 定义导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- 导航栏商标 -->
+        <div>
+            <a class="navbar-brand" href="index.html">个人博客</a>
+        </div>
+    </div>
+    <div class="navbar-collapse">
+    </div>
+</nav>
+<!--content-->
+<div class="container" style="height: 600px;margin-top: 20px">
+    <div class="row" >
+        <div class="col-12">
+            <div class="col-6">
+                <form class="login" id="login_form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_login">账号: </label>
+                        <input type="text" name="mobile" placeholder="请输入手机号" autofocus="autofocus" required id="id_login" class="form-control" v-model="mobile" @blur="check_mobile"/>
+                        <small class="form-text text-muted ml-1">还没有账号？<a href="{% url 'users:register' %}" style="color: cornflowerblue; ">注册新账号</a>
+                        </small>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="id_password">密码:</label>
+                        <input type="password" name="password" placeholder="请输入密码" required id="id_password" class="form-control" v-model="password" @blur="check_password"/>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-2">
+                        <input type="checkbox" name="remember" id="id_remember" checked class="custom-control-input" v-model="remembered"/>
+                        <label for="id_remember" class="custom-control-label">保持登录</label>
+                    </div>
+                    <button class="primaryAction btn btn-primary" type="submit" id="submit_login" @click="on_submit">登录</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<!-- Footer -->
+<footer class="py-3 bg-dark" id="footer">
+    <div class="container">
+        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+    </div>
+</footer>
+
+</div>
+<!-- 引入js -->
+<script type="text/javascript" src="{% static 'js/host.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+</body>
+
+</html>
