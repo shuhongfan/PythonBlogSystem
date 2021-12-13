@@ -35,17 +35,17 @@
         <div class="collapse navbar-collapse">
             <div>
                 <ul class="nav navbar-nav">
-{#                    {% for category in categories %}#}
-{#                        {% if cat.id == category.id %}#}
-{#                            <li class="nav-item active">#}
-{#                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>#}
-{#                            </li>#}
-{#                        {% else %}#}
-{#                             <li class="nav-item">#}
-{#                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
-{#                    {% endfor %}#}
+                    {% for cat in categories %}
+                        {% if cat.id == category.id %}
+                            <li class="nav-item active">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% else %}
+                             <li class="nav-item">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -73,172 +73,41 @@
 <!-- content -->
 <div class="container">
     <!-- 列表循环 -->
+    {% for article in articles %}
     <div class="row mt-2">
             <!-- 文章内容 -->
             <!-- 标题图 -->
             <div class="col-3">
-                <img src="{% static 'img/1.jpg' %}" alt="avatar" style="max-width:100%; border-radius: 20px">
+                <img src="{{ article.avatar.url }}" alt="avatar" style="max-width:100%; border-radius: 20px">
             </div>
             <div class="col">
                 <!-- 栏目 -->
-                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">Python</a>
+                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">{{ article.category.title }}</a>
             <!-- 标签 -->
                 <span>
-                        <a href="#" class="badge badge-secondary">Django</a>
+                        <a href="#" class="badge badge-secondary">{{ article.tags }}</a>
                 </span>
                 <!-- 标题 -->
                 <h4>
-                    <b><a href="../static/detail.html" style="color: black;">如何更好的学习Django呢？</a></b>
+                    <b><a href="../static/detail.html" style="color: black;">{{ article.title }}</a></b>
                 </h4>
                 <!-- 摘要 -->
                 <div>
                     <p style="color: gray;">
-                        Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。
+                       {{ article.sumary }}
                     </p>
                 </div>
                 <!-- 注脚 -->
                 <p>
                     <!-- 查看、评论、时间 -->
-                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>590&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>11&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-clock" style="color: pink;"></i>2019-10-22</span>
+                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>{{ article.total_views }}&nbsp;&nbsp;&nbsp;</span>
+                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>{{ article.comments_count }}&nbsp;&nbsp;&nbsp;</span>
+                    <span><i class="fas fa-clock" style="color: pink;"></i>{{ article.created | date }}</span>
                 </p>
             </div>
             <hr style="width: 100%;"/>
     </div>
-    <div class="row mt-2">
-            <!-- 文章内容 -->
-            <!-- 标题图 -->
-            <div class="col-3">
-                <img src="{% static '' %}../static/img/1.jpg" alt="avatar" style="max-width:100%; border-radius: 20px">
-            </div>
-            <div class="col">
-                <!-- 栏目 -->
-                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">Python</a>
-            <!-- 标签 -->
-                <span>
-                        <a href="#" class="badge badge-secondary">Django</a>
-                </span>
-                <!-- 标题 -->
-                <h4>
-                    <b><a href="../static/detail.html" style="color: black;">如何更好的学习Django呢？</a></b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。
-                    </p>
-                </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 查看、评论、时间 -->
-                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>590&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>11&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-clock" style="color: pink;"></i>2019-10-22</span>
-                </p>
-            </div>
-            <hr style="width: 100%;"/>
-    </div>
-    <div class="row mt-2">
-            <!-- 文章内容 -->
-            <!-- 标题图 -->
-            <div class="col-3">
-                <img src="{% static '' %}../static/img/1.jpg" alt="avatar" style="max-width:100%; border-radius: 20px">
-            </div>
-            <div class="col">
-                <!-- 栏目 -->
-                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">Python</a>
-            <!-- 标签 -->
-                <span>
-                        <a href="#" class="badge badge-secondary">Django</a>
-                </span>
-                <!-- 标题 -->
-                <h4>
-                    <b><a href="../static/detail.html" style="color: black;">如何更好的学习Django呢？</a></b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。
-                    </p>
-                </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 查看、评论、时间 -->
-                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>590&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>11&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-clock" style="color: pink;"></i>2019-10-22</span>
-                </p>
-            </div>
-            <hr style="width: 100%;"/>
-    </div>
-    <div class="row mt-2">
-            <!-- 文章内容 -->
-            <!-- 标题图 -->
-            <div class="col-3">
-                <img src="{% static '' %}../static/img/1.jpg" alt="avatar" style="max-width:100%; border-radius: 20px">
-            </div>
-            <div class="col">
-                <!-- 栏目 -->
-                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">Python</a>
-            <!-- 标签 -->
-                <span>
-                        <a href="#" class="badge badge-secondary">Django</a>
-                </span>
-                <!-- 标题 -->
-                <h4>
-                    <b><a href="../static/detail.html" style="color: black;">如何更好的学习Django呢？</a></b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。
-                    </p>
-                </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 查看、评论、时间 -->
-                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>590&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>11&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-clock" style="color: pink;"></i>2019-10-22</span>
-                </p>
-            </div>
-            <hr style="width: 100%;"/>
-    </div>
-    <div class="row mt-2">
-            <!-- 文章内容 -->
-            <!-- 标题图 -->
-            <div class="col-3">
-                <img src="{% static '' %}../static/img/1.jpg" alt="avatar" style="max-width:100%; border-radius: 20px">
-            </div>
-            <div class="col">
-                <!-- 栏目 -->
-                <a  role="button" href="#" class="btn btn-sm mb-2 btn-warning">Python</a>
-            <!-- 标签 -->
-                <span>
-                        <a href="#" class="badge badge-secondary">Django</a>
-                </span>
-                <!-- 标题 -->
-                <h4>
-                    <b><a href="../static/detail.html" style="color: black;">如何更好的学习Django呢？</a></b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。Django是一个开放源代码的Web应用框架，由Python写成。
-                    </p>
-                </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 查看、评论、时间 -->
-                    <span><i class="fas fa-eye" style="color: lightskyblue;"></i>590&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-comments" style="color: yellowgreen;"></i>11&nbsp;&nbsp;&nbsp;</span>
-                    <span><i class="fas fa-clock" style="color: pink;"></i>2019-10-22</span>
-                </p>
-            </div>
-            <hr style="width: 100%;"/>
-    </div>
-
+    {% endfor %}
     <!-- 页码导航 -->
     <div class="pagenation" style="text-align: center">
         <div id="pagination" class="page"></div>
@@ -261,11 +130,10 @@
 <script type="text/javascript">
     $(function () {
         $('#pagination').pagination({
-            currentPage: 15,
-            totalPage: 30,
+            currentPage: {{ page_num }},
+            totalPage: {{total_page}},
             callback:function (current) {
-
-                location.href = '/';
+                location.href = '/?cat_id={{ category.id }}&page_size={{ page_num }}&page_num='+current;
             }
         })
     });
