@@ -54,6 +54,7 @@
             <br>
             <!-- 提交文章的表单 -->
             <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <!-- 文章标题图 -->
                 <div class="form-group">
                     <label for="avatar">标题图</label>
@@ -73,13 +74,9 @@
                     <label for="category">栏目</label>
                     <select class="form-control col-3" id="category" name="category">
                             <option value="none">请选择栏目..</option>
-                        
-                            <option value="1">Django</option>
-                        
-                            <option value="2">Java</option>
-                        
-                            <option value="3">HTML</option>
-                        
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.title }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
