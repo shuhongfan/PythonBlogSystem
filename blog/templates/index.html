@@ -89,7 +89,7 @@
                 </span>
                 <!-- 标题 -->
                 <h4>
-                    <b><a href="../static/detail.html" style="color: black;">{{ article.title }}</a></b>
+                    <b><a href="{% url 'home:detail' %}?id={{ article.id }}" style="color: black;">{{ article.title }}</a></b>
                 </h4>
                 <!-- 摘要 -->
                 <div>

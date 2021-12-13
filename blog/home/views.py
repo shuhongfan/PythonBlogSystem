@@ -43,3 +43,23 @@ class IndexView(View):
             'page_num': page_num
         }
         return render(request, 'index.html',context=context)
+
+
+class DetailView(View):
+    def get(self,request):
+        # 1.接收文章id信息
+        id = request.GET.get('id')
+        # 2.根据文章id进行文章数据的查询
+        try:
+            article = Article.objects.get(id=id)
+        except Article.DoesNotExist:
+            return render(request, '404.html')
+        # 3.查询分类数据
+        categories = ArticleCategory.objects.all()
+        # 4.组织模板数据
+        context = {
+            'categories':categories,
+            'category':article.category,
+            'article': article
+        }
+        return render(request,"detail.html",context=context)

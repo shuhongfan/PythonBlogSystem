@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <!-- 网站主语言 -->
 <html lang="zh-cn">
-
+{% load static %}
 <head>
     <!-- 网站采用的字符编码 -->
     <meta charset="utf-8">
     <!-- 网站标题 -->
     <title>404</title>
     <!-- 引入bootstrap的css文件 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 
 </head>
 
@@ -20,7 +20,7 @@
     <div class="container">
         <!-- 导航栏商标 -->
         <div>
-            <a class="navbar-brand" href="../templates/index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}index.html">个人博客</a>
         </div>
     </div>
     <!--登录/个人中心-->
@@ -29,7 +29,7 @@
 </nav>
 <!--content-->
 <div class="container" style="height: 600px;margin-top: 20px">
-    <img src="img/404.png" alt="">
+    <img src="{% static 'img/404.png' %}" alt="">
     <br>
     <div style="text-align: center;">
         <a href="/" class="primaryAction btn btn-primary">返回首页</a>
