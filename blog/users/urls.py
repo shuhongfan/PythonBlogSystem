@@ -7,7 +7,8 @@
 
 # 进行users子应用的视图路由
 from django.urls import path
-from users.views import RegisterView, ImageCodeView, LoginView, LogoutView, UserCenterView, WriteBlogView
+from users.views import RegisterView, ImageCodeView, LoginView, LogoutView, UserCenterView, WriteBlogView, \
+    ResetPasswordView, DeleteBlogView
 
 urlpatterns = [
     # path的路由
@@ -28,5 +29,11 @@ urlpatterns = [
     path("center/",UserCenterView.as_view(),name="center"),
 
     # 写博客的路由
-    path("writeblog/",WriteBlogView.as_view(),name="writeblog")
+    path("writeblog/",WriteBlogView.as_view(),name="writeblog"),
+
+    # 删除博客
+    path("deleteblog/",DeleteBlogView.as_view(),name="deleteblog"),
+
+    # 重置密码
+    path("resetpassword/",ResetPasswordView.as_view(),name="resetpassword")
 ]

@@ -80,82 +80,14 @@ var vm = new Vue({
                 this.image_code_error = false;
             }
         },
-        //检查短信验证码
-        check_sms_code:function () {
-            if (!this.sms_code) {
-                this.sms_code_error = true;
-            } else {
-                this.sms_code_error = false;
-            }
-        },
-        //发送短信验证码
-        send_sms_code:function () {
-            if (this.sending_flag == true) {
-                return;
-            }
-
-
-            // 校验参数，保证输入框有数据填写
-            this.check_mobile();
-            this.check_image_code();
-
-            if (this.mobile_error == true || this.image_code_error == true) {
-                this.sending_flag = false;
-                this.sms_code_error=true;
-                this.sms_code_error_message='手机号或验证码错误'
-                return;
-            }
-            this.sending_flag = true;
-            // 向后端接口发送请求，让后端发送短信验证码
-            var url = this.host + '/smscode/?mobile=' + this.mobile + '&image_code=' + this.image_code + '&uuid=' + this.uuid;
-            axios.get(url, {
-                responseType: 'json'
-            })
-                .then(response => {
-                    this.image_code_error=false;
-                    // 表示后端发送短信成功
-                    if (response.data.code == '0') {
-                        // 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
-                        var num = 60;
-                        // 设置一个计时器
-                        var t = setInterval(() => {
-                            if (num == 1) {
-                                // 如果计时器到最后, 清除计时器对象
-                                clearInterval(t);
-                                // 将点击获取验证码的按钮展示的文本回复成原始文本
-                                this.sms_code_message = '获取短信验证码';
-                                // 将点击按钮的onclick事件函数恢复回去
-                                this.sending_flag = false;
-                            } else {
-                                num -= 1;
-                                // 展示倒计时信息
-                                this.sms_code_message = num + '秒';
-                            }
-                        }, 1000, 60)
-                    } else {
-                        if (response.data.code == '4001') {
-                            //图片验证码错误
-                            this.image_code_error = true;
-                        }
-                        this.sms_code_error = true;
-                        this.generate_image_code();
-                        this.sending_flag = false;
-                    }
-                })
-                .catch(error => {
-                    console.log(error.response);
-                    this.sending_flag = false;
-                })
-        },
         //提交
         on_submit:function () {
-            this.check_mobile();
+            // this.check_mobile();
             this.check_password();
             this.check_password2();
-            this.check_sms_code();
 
             if (this.mobile_error == true || this.password_error == true || this.password2_error == true
-                || this.image_code_error == true || this.sms_code_error == true) {
+                || this.image_code_error == true ) {
                 // 不满足注册条件：禁用表单
                 window.event.returnValue = false;
             }

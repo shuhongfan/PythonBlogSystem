@@ -28,13 +28,15 @@
 
     <div class="container">
         <!-- 导航栏商标 -->
+        <a class="navbar-brand" href="{% url 'home:index' %}">
+            <img src="{% static 'img/SHF.PNG' %}" alt="logo" style="width:40px;">
+        </a>
         <div>
-            <a class="navbar-brand" href="{% url 'home:index' %}">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">博客Blog</a>
         </div>
         <!-- 分类 -->
         <div class="collapse navbar-collapse">
-            <div>
-                <ul class="nav navbar-nav">
+           <ul class="nav navbar-nav navbar-left">
                     {% for cat in categories %}
                         {% if cat.id == category.id %}
                             <li class="nav-item active">
@@ -47,38 +49,34 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-            </div>
-        </div>
-    </div>
-    <!--登录/个人中心-->
-    <div class="navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right" style="position: relative;right: -25rem;">
                 <!-- 如果用户已经登录，则显示用户名下拉框 -->
                 <li class="nav-item dropdown" v-if="is_login">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">[[username]]</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
                         <a class="dropdown-item" href="{% url 'users:writeblog' %}">写文章</a>
                         <a class="dropdown-item" href='{% url 'users:center' %}'>个人信息</a>
+                        <a class="dropdown-item" href='{% url 'users:resetpassword' %}'>重置密码</a>
                         <a class="dropdown-item" href='{% url 'users:logout' %}'>退出登录</a>
                     </div>
                 </li>
                 <!-- 如果用户未登录，则显示登录按钮 -->
                 <li class="nav-item" v-else>
-                    <a class="nav-link" href="{% url 'users:login' %}">登录</a>
+                    <a class="nav-link"  href="{% url 'users:login' %}">登录</a>
                 </li>
             </ul>
         </div>
+    </div>
 </nav>
-
 <!-- content -->
 <div class="container">
     <!-- 列表循环 -->
-    {% for article in articles %}
+    {% for article in page_articles %}
     <div class="row mt-2">
             <!-- 文章内容 -->
             <!-- 标题图 -->
             <div class="col-3">
-                <img src="{{ article.avatar.url }}" alt="avatar" style="max-width:100%; border-radius: 20px">
+                <img class="img-responsive" src="{{ article.avatar.url }}" alt="avatar" style="max-width:100%;max-height: 155px; border-radius: 20px">
             </div>
             <div class="col">
                 <!-- 栏目 -->
@@ -117,7 +115,7 @@
 <!-- Footer -->
 <footer class="py-3 bg-dark" id="footer">
     <div class="container">
-        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+        <h5 class="m-0 text-center text-white">Copyright @ shuhongfan</h5>
     </div>
 </footer>
 </div>
@@ -133,7 +131,7 @@
             currentPage: {{ page_num }},
             totalPage: {{total_page}},
             callback:function (current) {
-                location.href = '/?cat_id={{ category.id }}&page_size={{ page_num }}&page_num='+current;
+                location.href = '/?cat_id={{ category.id }}&page_size={{ page_size }}&page_num='+current;
             }
         })
     });

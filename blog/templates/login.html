@@ -20,13 +20,32 @@
 
 <!-- 定义导航栏 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
     <div class="container">
         <!-- 导航栏商标 -->
+        <a class="navbar-brand" href="{% url 'home:index' %}">
+            <img src="{% static 'img/SHF.PNG' %}" alt="logo" style="width:40px;">
+        </a>
         <div>
-            <a class="navbar-brand" href="index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">博客Blog</a>
         </div>
-    </div>
-    <div class="navbar-collapse">
+        <!-- 分类 -->
+        <div class="collapse navbar-collapse">
+           <ul class="nav navbar-nav navbar-left">
+                    {% for cat in categories %}
+                        {% if cat.id == category.id %}
+                            <li class="nav-item active">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% else %}
+                             <li class="nav-item">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+        </div>
     </div>
 </nav>
 <!--content-->
@@ -61,7 +80,7 @@
 <!-- Footer -->
 <footer class="py-3 bg-dark" id="footer">
     <div class="container">
-        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+        <h5 class="m-0 text-center text-white">Copyright @ shuhongfan</h5>
     </div>
 </footer>
 

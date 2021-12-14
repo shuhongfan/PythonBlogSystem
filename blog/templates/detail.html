@@ -25,51 +25,49 @@
 <div id="app">
 <!-- 定义导航栏 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
     <div class="container">
         <!-- 导航栏商标 -->
+        <a class="navbar-brand" href="{% url 'home:index' %}">
+            <img src="{% static 'img/SHF.PNG' %}" alt="logo" style="width:40px;">
+        </a>
         <div>
-            <a class="navbar-brand" href="index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">博客Blog</a>
         </div>
         <!-- 分类 -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <div>
-                <ul class="nav navbar-nav">
+        <div class="collapse navbar-collapse">
+           <ul class="nav navbar-nav navbar-left">
                     {% for cat in categories %}
                         {% if cat.id == category.id %}
                             <li class="nav-item active">
-                                <a class="nav-link mr-2" href="#">Python</a>
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
                             </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link mr-2" href="#">Java</a>
+                             <li class="nav-item">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
-            </div>
-        </div>
-    </div>
-    <!--登录/个人中心-->
-    <div class="navbar-collapse">
-        <ul class="nav navbar-nav">
-
-            <!-- 如果用户已经登录，则显示用户名下拉框 -->
-            <li class="nav-item dropdown" v-if="is_login">
+            <ul class="nav navbar-nav navbar-right" style="position: relative;right: -25rem;">
+                <!-- 如果用户已经登录，则显示用户名下拉框 -->
+                <li class="nav-item dropdown" v-if="is_login">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="show_menu_click">[[username]]</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="display: block" v-show="show_menu">
                         <a class="dropdown-item" href="{% url 'users:writeblog' %}">写文章</a>
                         <a class="dropdown-item" href='{% url 'users:center' %}'>个人信息</a>
+                        <a class="dropdown-item" href='{% url 'users:resetpassword' %}'>重置密码</a>
                         <a class="dropdown-item" href='{% url 'users:logout' %}'>退出登录</a>
                     </div>
                 </li>
                 <!-- 如果用户未登录，则显示登录按钮 -->
                 <li class="nav-item" v-else>
-                    <a class="nav-link" href="{% url 'users:login' %}">登录</a>
+                    <a class="nav-link"  href="{% url 'users:login' %}">登录</a>
                 </li>
-        </ul>
+            </ul>
+        </div>
     </div>
 </nav>
-
 <!-- content -->
 <div class="container">
     <div class="row">
@@ -77,7 +75,14 @@
         <div class="col-9">
             <!-- 标题及作者 -->
             <h1 class="mt-4 mb-4">{{ article.title }}</h1>
-            <div class="alert alert-success"><div>作者：<span>{{ article.author.username }}</span></div><div>浏览：{{ article.total_views }}</div></div>
+            <div class="alert alert-success">
+                <div>作者：<span>{{ article.author.username }}</span></div>
+                <div>浏览：{{ article.total_views }}</div>
+                <!-- 删除博客 -->
+                {% if article.author.username == username  %}
+                    <a href="{% url 'users:deleteblog' %}?articleID={{ id }}" class="btn btn-primary ">删除博客</a>
+                {% endif %}
+            </div>
             <!-- 文章正文 -->
             <div class="col-12" style="word-break: break-all;word-wrap: break-word;">
                 <p><p>{{ article.content | safe }}</p></p>
@@ -91,6 +96,8 @@
             <br>
             <div>
                 <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ article.id }}">
                 <div class="form-group"><label for="body"><strong>我也要发言：</strong></label>
                     <div>
 
@@ -107,48 +114,18 @@
             </div>
             <br>
             <!-- 显示评论 -->
-            <h4>共有5条评论</h4>
+            <h4>共有{{ total_count }}条评论</h4>
             <div class="row">
-                <div class="col-12" >
-                            <hr><p><strong style="color: pink"></strong></p>
-                            <div>
-                                <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                                <br>
-                                <p>学习了</p>
-                            </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
+                {% for comment in comments %}
+                    <div class="col-12" >
+                        <hr><p><strong style="color: pink"></strong></p>
+                        <div>
+                            <div><span><strong>{{ comment.user.username }}</strong></span>&nbsp;<span style="color: gray">{{ comment.created | date:'Y-m-d H:i' }}</span></div>
+                            <br>
+                            <p>{{ comment.content | safe }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <hr><p><strong style="color: pink"></strong></p>
-                    <div>
-                        <div><span><strong>老王</strong></span>&nbsp;<span style="color: gray">2019-05-18 14:54</span></div>
-                        <br>
-                        <p>学习了</p>
-                    </div>
-                </div>
+                {% endfor %}
                 <div class="pagenation" style="text-align: center">
                     <div id="pagination" class="page"></div>
                 </div>
@@ -160,11 +137,9 @@
             <div class="sidebar__inner">
                     <h4><strong>推荐</strong></h4>
                     <hr>
-                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
-                    <a href="#" style="color: black">如何更好的学习Django呢？</a><br>
+                    {% for hot_articles in hot_articles %}
+                        <a href="{% url 'home:detail' %}?id={{ hot_articles.id }}" style="color: black">{{ hot_articles.title }}</a><br>
+                    {% endfor %}
             </div>
         </div>
     </div>
@@ -174,7 +149,7 @@
 <!-- Footer -->
 <footer class="py-3 bg-dark" id="footer">
     <div class="container">
-        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+        <h5 class="m-0 text-center text-white">Copyright @ shuhongfan</h5>
     </div>
 </footer>
 </div>
@@ -191,11 +166,10 @@
 <script type="text/javascript">
     $(function () {
         $('#pagination').pagination({
-            currentPage: 15,
-            totalPage: 30,
+            currentPage: {{ page_num }},
+            totalPage: {{ total_page }},
             callback:function (current) {
-
-                location.href = '/';
+                location.href = '/detail/?id={{ article.id }}&page_size={{ page_size }}&page_num='+current;
             }
         })
     });

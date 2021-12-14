@@ -167,7 +167,7 @@ class UserCenterView(LoginRequiredMixin,View):
         user = request.user
         # 1.接收参数
         username = request.POST.get("username",user.username)
-        user_desc = request.POST.get("username",user.username)
+        user_desc = request.POST.get('desc',user.user_desc)
         avatar = request.FILES.get("avatar")
         # 2.将参数保存起来
         try:
@@ -219,6 +219,8 @@ class WriteBlogView(LoginRequiredMixin,View):
 
         # 2.验证数据
         # 2.1 验证参数是否齐全
+        if category_id == 'none':
+            return HttpResponseBadRequest('参数不全')
         if not all([avatar,title,category_id,sumary,content]):
             return HttpResponseBadRequest('参数不全')
         # 2.2 判断分类id
@@ -242,3 +244,64 @@ class WriteBlogView(LoginRequiredMixin,View):
             return HttpResponseBadRequest('发布失败，请稍后再试')
         # 4.跳转到指定页面（暂时首页）
         return redirect(reverse('home:index'))
+
+# 删除博客
+class DeleteBlogView(LoginRequiredMixin,View):
+    def get(self,request):
+        # 获取登录用户的信息
+        user = request.user
+        # 获取删除博客id
+        articleID = request.GET.get('articleID')
+        # 数据入库
+        try:
+            Article.objects.get(id=articleID).delete()
+        except Exception as e:
+            logger.error(e)
+            return HttpResponseBadRequest('删除博客失败，请稍后再试')
+        # 4.跳转到指定页面（暂时首页）
+        return redirect(reverse('home:index'))
+
+
+# 重置密码
+class ResetPasswordView(LoginRequiredMixin,View):
+    def get(self,request):
+        user = request.user
+        # 组织获取用户的信息
+        context = {
+            'username': user.username,
+            'mobile': user.mobile,
+            'avatar': user.avatar.url if user.avatar else None,
+            'user_desc': user.user_desc
+        }
+        return render(request,"reset_password.html", context=context)
+    def post(self,request):
+        # 1.读取数据
+        mobile = request.POST.get("mobile")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
+        # 2判断参数是否齐全
+        if not all([mobile, password, password2]):
+            return HttpResponseBadRequest('缺少必传参数')
+        # 判断手机号是否合法
+        if not re.match(r'^1[3-9]\d{9}$', mobile):
+            return HttpResponseBadRequest('请输入正确的手机号码')
+        # 判断密码是否是8-20个数字
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', password):
+            return HttpResponseBadRequest('请输入8-20位的密码')
+        # 判断两次密码是否一致
+        if password != password2:
+            return HttpResponseBadRequest('两次输入的密码不一致')
+        # 3.根据手机号查询数据
+        try:
+            user = User.objects.get(mobile=mobile)
+        except User.DoesNotExist:
+            return HttpResponseBadRequest('修改失败，请稍后再试')
+        else:
+            # 修改用户密码
+            user.set_password(password)
+            user.save()
+
+        # 跳转到登录页面
+        response = redirect(reverse('users:login'))
+
+        return response

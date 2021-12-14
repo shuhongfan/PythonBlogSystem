@@ -14,25 +14,43 @@
 
 <body>
 <div id="app">
-
 <!-- 定义导航栏 -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
     <div class="container">
         <!-- 导航栏商标 -->
+        <a class="navbar-brand" href="{% url 'home:index' %}">
+            <img src="{% static 'img/SHF.PNG' %}" alt="logo" style="width:40px;">
+        </a>
         <div>
-            <a class="navbar-brand" href="{% url 'home:index' %}index.html">个人博客</a>
+            <a class="navbar-brand" href="{% url 'home:index' %}">博客Blog</a>
         </div>
-    </div>
-    <!--登录/个人中心-->
-    <div class="navbar-collapse">
+        <!-- 分类 -->
+        <div class="collapse navbar-collapse">
+           <ul class="nav navbar-nav navbar-left">
+                    {% for cat in categories %}
+                        {% if cat.id == category.id %}
+                            <li class="nav-item active">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% else %}
+                             <li class="nav-item">
+                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+        </div>
     </div>
 </nav>
 <!--content-->
-<div class="container" style="height: 600px;margin-top: 20px">
-    <img src="{% static 'img/404.png' %}" alt="">
+
+<div  style="height: 1080px;">
+    <img style="display:block; margin:0 auto;" src="{% static 'img/404.jpg' %}" alt="">
     <br>
-    <div style="text-align: center;">
-        <a href="/" class="primaryAction btn btn-primary">返回首页</a>
+    <div style="text-align: center;position: absolute;left: 51%;top: 92%;">
+        <a href="/" class="primaryAction btn btn-primary">👉ﾟヮﾟ)👉(👉ﾟヮﾟ)👉  返回首页  👈(ﾟヮﾟ👈)👈(ﾟヮﾟ👈)</a>
     </div>
 </div>
 
@@ -40,7 +58,7 @@
 <!-- Footer -->
 <footer class="py-3 bg-dark" id="footer">
     <div class="container">
-        <h5 class="m-0 text-center text-white">Copyright @ qiruihua</h5>
+        <h5 class="m-0 text-center text-white">Copyright @ shuhongfan</h5>
     </div>
 </footer>
 
