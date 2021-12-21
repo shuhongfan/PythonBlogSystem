@@ -101,6 +101,7 @@
                                 <input type="text" name="imgage_code" placeholder="请输入图片验证码" required  class="form-control" v-model="image_code" @blur="check_image_code"/>
                             </div>
                             <img :src="image_code_url" @click="generate_image_code" alt="" style="width: 110px;height: 40px;">
+                            <input style="opacity: 0" name="uuid" v-model="uuid">
                             <small class="form-text text-muted ml-1" v-show="image_code_error" >[[image_code_error_message]]</small>
                         </div>
                     </div>

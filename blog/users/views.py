@@ -32,6 +32,8 @@ class RegisterView(View):
         mobile = request.POST.get("mobile")
         password = request.POST.get("password")
         password2 = request.POST.get("password2")
+        imgage_code = request.POST.get("imgage_code").upper()
+        uuid = request.POST.get("uuid")
         # 2.验证数据
         #     2.1 参数是否安全
         if not all([mobile, password, password2]):
@@ -42,9 +44,16 @@ class RegisterView(View):
         #     2.3 密码是否符合格式
         if not re.match(r"^[0-9A-Za-z]{8,20}$", password):
             return HttpResponseBadRequest("请输入8-20为密码，密码是数字，字母！")
-        #     2.4 密码和确认密码是否要一致
+        #     2.4 密码和确认密码是否一致
         if password != password2:
             return HttpResponseBadRequest("两次输入密码不一致！")
+        #     2.5 验证码是否要一致
+        redis_conn = get_redis_connection('default')
+        img_code_server = redis_conn.get('img:%s' % uuid)
+        if img_code_server is None:
+            return HttpResponseBadRequest('图片验证码已过期')
+        if imgage_code != img_code_server.decode():
+            return HttpResponseBadRequest('图片验证码错误')
         # 3.保存注册信息
         # create_user 可以使用系统的方法来对密码进行加密
         try:
@@ -279,6 +288,8 @@ class ResetPasswordView(LoginRequiredMixin,View):
         mobile = request.POST.get("mobile")
         password = request.POST.get("password")
         password2 = request.POST.get("password2")
+        imgage_code = request.POST.get("imgage_code").upper()
+        uuid = request.POST.get("uuid")
         # 2判断参数是否齐全
         if not all([mobile, password, password2]):
             return HttpResponseBadRequest('缺少必传参数')
@@ -291,6 +302,13 @@ class ResetPasswordView(LoginRequiredMixin,View):
         # 判断两次密码是否一致
         if password != password2:
             return HttpResponseBadRequest('两次输入的密码不一致')
+        #  验证码是否要一致
+        redis_conn = get_redis_connection('default')
+        img_code_server = redis_conn.get('img:%s' % uuid)
+        if img_code_server is None:
+            return HttpResponseBadRequest('图片验证码已过期')
+        if imgage_code != img_code_server.decode():
+            return HttpResponseBadRequest('图片验证码错误')
         # 3.根据手机号查询数据
         try:
             user = User.objects.get(mobile=mobile)

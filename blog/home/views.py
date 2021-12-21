@@ -84,23 +84,38 @@ class DetailView(View):
         total_page = paginator.num_pages
 
         # 11.组织模板数据
-        context = {
-            'id':id,
-            'categories':categories,
-            'category':article.category,
-            'article': article,
-            'hot_articles': hot_articles,
-            'total_count':total_count,
-            'page_comments':page_comments,
-            'total_page':total_page,
-            'comments':comments,
-            'page_size':page_size,
-            'page_num':page_num,
-            'username': user.username,
-            'mobile': user.mobile,
-            'avatar': user.avatar.url if user.avatar else None,
-            'user_desc': user.user_desc
-        }
+        if user.is_anonymous:
+            context = {
+                'id': id,
+                'categories': categories,
+                'category': article.category,
+                'article': article,
+                'hot_articles': hot_articles,
+                'total_count': total_count,
+                'page_comments': page_comments,
+                'total_page': total_page,
+                'comments': comments,
+                'page_size': page_size,
+                'page_num': page_num,
+            }
+        else:
+            context = {
+                'id': id,
+                'categories': categories,
+                'category': article.category,
+                'article': article,
+                'hot_articles': hot_articles,
+                'total_count': total_count,
+                'page_comments': page_comments,
+                'total_page': total_page,
+                'comments': comments,
+                'page_size': page_size,
+                'page_num': page_num,
+                'username': user.username if user.username else None,
+                'mobile': user.mobile if user.mobile else None,
+                'avatar': user.avatar.url if user.avatar else None,
+                'user_desc': user.user_desc if user.user_desc else None
+            }
         return render(request,"detail.html",context=context)
 
     def post(self,request):

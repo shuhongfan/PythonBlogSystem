@@ -25,22 +25,8 @@
         <div>
             <a class="navbar-brand" href="{% url 'home:index' %}">博客Blog</a>
         </div>
-        <!-- 分类 -->
-        <div class="collapse navbar-collapse">
-           <ul class="nav navbar-nav navbar-left">
-                    {% for cat in categories %}
-                        {% if cat.id == category.id %}
-                            <li class="nav-item active">
-                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
-                            </li>
-                        {% else %}
-                             <li class="nav-item">
-                                <a class="nav-link mr-2" href="/?cat_id={{ cat.id }}">{{ cat.title }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-
+        <div style="text-align: center;">
+            <a href="/" class="primaryAction btn btn-primary">👉ﾟヮﾟ)👉(👉ﾟヮﾟ)👉  返回首页  👈(ﾟヮﾟ👈)👈(ﾟヮﾟ👈)</a>
         </div>
     </div>
 </nav>
@@ -48,10 +34,6 @@
 
 <div  style="height: 1080px;">
     <img style="display:block; margin:0 auto;" src="{% static 'img/404.jpg' %}" alt="">
-    <br>
-    <div style="text-align: center;position: absolute;left: 51%;top: 92%;">
-        <a href="/" class="primaryAction btn btn-primary">👉ﾟヮﾟ)👉(👉ﾟヮﾟ)👉  返回首页  👈(ﾟヮﾟ👈)👈(ﾟヮﾟ👈)</a>
-    </div>
 </div>
 
     
